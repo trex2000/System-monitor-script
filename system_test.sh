@@ -10,13 +10,13 @@ echo -e "\e[94mSensorStatus:\e[0m"
 #echo "$SENSORS"
 
 echo -e "\e[36mTemp:\e[0m"
-SENSORS=$(/usr/bin/sensors | grep -i temp.:)
+SENSORS=$(sudo /usr/bin/sensors | grep -i temp.:)
 echo "$SENSORS"
-SENSORS=$(/usr/bin/sensors | grep -i Core)
+SENSORS=$(sudo /usr/bin/sensors | grep -i Core)
 echo "$SENSORS"
 
 echo -e "\e[36mPower:\e[0m"
-SENSORS=$(/usr/bin/sensors | grep -i -A6 'ACPI interface')
+SENSORS=$(sudo /usr/bin/sensors | grep -i -A6 'ACPI interface')
 echo "$SENSORS"
 
 echo -e "\e[94mChecking UPS Status:\e[0m"
@@ -42,7 +42,7 @@ for DEV in /sys/block/sd*
 do
  DEV=`basename $DEV`
  sdparm -i /dev/$DEV | grep -i $DEV
- out=$(/usr/sbin/smartctl -H /dev/sda -d sat)
+ out=$(sudo /usr/sbin/smartctl -H /dev/sda -d sat)
  searchString="PASSED"
  if `echo ${out} | grep "${searchString}" 1>/dev/null 2>&1`
  then
@@ -52,5 +52,5 @@ do
  fi
 done
 echo -e "\e[94mRaid1 Array Status:\e[0m"
-mdadm --detail /dev/md0  | grep -i State
+sudo mdadm --detail /dev/md0  | grep -i State
 exit 0
